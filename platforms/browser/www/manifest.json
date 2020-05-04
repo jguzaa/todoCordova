@@ -1,11 +1,11 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "HelloCordova",
-  "short_name": "HelloCordova",
-  "version": "io.cordova.hellocordova",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "author": "Apache Cordova Team",
+  "name": "SimpleTodoList",
+  "short_name": "SimpleTodoList",
+  "version": "io.cordova.simpletodo",
+  "description": "Simple to-do list application. Jongjet, student id 7256.",
+  "author": "Jongjet W.",
   "icons": [],
   "start_url": "index.html"
 }
