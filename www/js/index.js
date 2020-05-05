@@ -3,11 +3,11 @@ var app = {
     // Application Constructor
     initialize: function () {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        document.addEventListener('resume', this.onDeviceResume.bind(this), false);
     },
 
 
     onDeviceReady: function () {
-
 
         let taskTxt = [];
         let taskStatus = [];
@@ -15,7 +15,7 @@ var app = {
         console.log("ready!");
 
         //read file from internal storage
-        
+
         if (window.localStorage.getItem("TASK_TXT") != undefined) {
             
             //Get the data from storage
@@ -116,7 +116,31 @@ var app = {
 
     },
 
+    onDeviceResume: function () {
+        let taskStatus = [];
 
+        //read file from internal storage
+
+        if (window.localStorage.getItem("TASK_STAT") != undefined) {
+            
+            //Get the data from storage
+
+            let status = window.localStorage.getItem("TASK_STAT");
+
+            taskStatus = status.split(",");
+
+            //count undone task
+            let i = 0;
+            taskStatus.forEach(function (item, index, array) {
+                if (item == "0") {
+                    //update ui
+                    i++;
+                }
+            })
+
+            alert("You have "+i+" undone task!");
+        }
+    },
 
 
 };
