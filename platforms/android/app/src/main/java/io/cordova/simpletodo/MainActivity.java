@@ -17,7 +17,7 @@
        under the License.
  */
 
-package io.cordova.hellocordova;
+package io.cordova.simpletodo;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
