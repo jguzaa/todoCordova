@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
     <script src="themes/jquery-1.11.1.min.js"></script>
-    <script src="themes/jquery.mobile-1.4.5.min.js"></script>
+
 </head>
 
 <body>
@@ -22,7 +22,9 @@
         <div data-role="content">
 
             <fieldset data-role="controlgroup"></fieldset>
-            <legend><h3>To do list</h3></legend>
+            <legend>
+                <h3>To do list</h3>
+            </legend>
 
             <div id="taskList">
 
@@ -59,20 +61,31 @@
         $(function () {
             console.log("ready!");
 
-            if (window.localStorage.getItem("TASK_TXT") == undefined) { 
+            if (window.localStorage.getItem("TASK_TXT") == undefined) {
                 //undisplay everything bc have no data in storage
                 $("#taskList").html("");
             } else {
                 //Get the data from storage
-                
+
                 let text = window.localStorage.getItem("TASK_TXT");
                 let status = window.localStorage.getItem("TASK_STAT");
 
                 let textArr = text.split(":");
                 let statusArr = status.split(":");
 
-                console.log(textArr);
+                //remove unused first element
+                textArr.shift();
+                statusArr.shift();
 
+                //generate the list from arrays
+                let htmlEle = "";
+                textArr.forEach(function (item, index, array) {
+                    htmlEle += "<input type=\"checkbox\" name=\"" + index + "\" id=\"" + index + "\" value=\"" + index + "\"><label for=\"" + index + "\"><p>" + item + "</p></label>";
+                })
+
+                console.log(htmlEle);
+
+                $("#taskList").html(htmlEle);
 
 
             }
@@ -81,25 +94,25 @@
                 console.log("task added");
 
                 //Add task to taskTxt set
-                taskTxt.unshift($("#taskAdd").val());
+                taskTxt.push($("#taskAdd").val());
 
                 //set complete status to incomplete (represent by 0)
-                taskStatus.unshift(0);
+                taskStatus.push(0);
 
                 //Save taskTxt to local storage
                 let text = "";
-                taskTxt.forEach(function(item, index, array){
+                taskTxt.forEach(function (item, index, array) {
                     text = text + ":" + item;
                 })
                 window.localStorage.setItem("TASK_TXT", text);
 
                 //Save taskStatus to local storage
                 text = "";
-                taskStatus.forEach(function(item, index, array){
+                taskStatus.forEach(function (item, index, array) {
                     text = text + ":" + item;
                 })
                 window.localStorage.setItem("TASK_STAT", text);
-                
+
                 //reload page
                 //location.reload();
 
@@ -124,12 +137,13 @@
             });
 
 
-            
+
         });
 
 
     </script>
 
+    <script src="themes/jquery.mobile-1.4.5.min.js"></script>
 
 </body>
 
