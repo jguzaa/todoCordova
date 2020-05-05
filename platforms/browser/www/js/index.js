@@ -126,10 +126,31 @@ var app = {
         //Take a photo btn clicked
         $("#camClick").click(function () {
             
-            
+            let opts = {
+                quality: 80,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.CAMERA,
+                mediaType: Camera.MediaType.PICTURE,
+                encodingType: Camera.EncodingType.JPEG,
+                cameraDirection: Camera.Direction.BACK,
+                targetWidth: 300,
+                targetHeight: 400
+            };
+
+            navigator.camera.getPicture(app.ftw, app.wtf, opts);
 
         });
 
+    },
+
+    //camera API
+    ftw: function(imgURI){
+        document.getElementById('msg').textContent = imgURI;
+        document.getElementById('photo').textContent = imgURI;
+    },
+
+    wtf: function(msg){
+        document.getElementById('msg').textContent = msg;
     },
 
     onDeviceResume: function () {
