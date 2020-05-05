@@ -21,19 +21,16 @@
 
         <div data-role="content">
 
-            <fieldset data-role="controlgroup"></fieldset>
-            <legend>
-                <h3>To do list</h3>
-            </legend>
+            <fieldset data-role="controlgroup">
+                <legend>
+                    <h3>To do list</h3>
+                </legend>
 
-            <div id="taskList">
+                <div id="taskList">
 
-                <input type="checkbox" name="" id="" value="">
-                <label for="">
-                    <p></p>
-                </label>
+                    <!--Generate list here-->
 
-            </div>
+                </div>
 
             </fieldset>
 
@@ -76,7 +73,7 @@
                 //generate the list from arrays
                 let htmlEle = "";
                 taskTxt.forEach(function (item, index, array) {
-                    htmlEle += "<input type=\"checkbox\" name=\"" + index + "\" id=\"" + index + "\" value=\"" + index + "\"><label for=\"" + index + "\"><p>" + item + "</p></label>";
+                    htmlEle += "<input type=\"checkbox\" name=\"" + index + "\" id=\"" + index + "\" value=\"" + index + "\"><label for=\"" + index + "\"><p id=\"" + index + "p\">" + item + "</p></label>";
                 })
 
                 $("#taskList").html(htmlEle);
@@ -114,13 +111,17 @@
                 console.log("checked ", this.checked);
 
                 if (this.checked) {
-                    userPref.add(this.value);
-                    $("label p").css("text-decoration", "line-through");
-                } else {
-                    userPref.delete(this.value);
-                    $("label p").css("text-decoration", "none");
+                    $("#" + this.value + "p").css("text-decoration", "line-through");
 
+                    //update done item by change it to 1 in taskStatus
+                    taskStatus[this.value] = "1";
+
+                } else {
+                    $("#" + this.value + "p").css("text-decoration", "none");
+                    
                 }
+
+                //save task status to local storage
 
 
             });
