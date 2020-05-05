@@ -12,22 +12,27 @@
 </head>
 
 <body>
-    
+
     <div data-role="page" id="page1">
 
         <div data-role="header">
-            <h1 id="showDate">test</h1>
+            <h1 id="showDate">DD/MM/YYYY</h1>
         </div>
 
         <div data-role="content">
 
             <fieldset data-role="controlgroup"></fieldset>
-            <legend>To do list</legend>
-            <input type="checkbox" name="" id="" value="">
-            <label for="">
-                <p></p>
-            </label>
-            
+            <legend><h3>To do list</h3></legend>
+
+            <div id="taskList">
+
+                <input type="checkbox" name="" id="" value="">
+                <label for="">
+                    <p></p>
+                </label>
+
+            </div>
+
             </fieldset>
 
             <input type="text" name="taskAdd" id="taskAdd" value="">
@@ -36,15 +41,94 @@
         </div><!-- /content -->
 
         <div data-role="footer">
-            Footer
+
         </div><!-- /footer -->
 
-        
+
     </div>
 
 
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+
+    <script type="text/javascript">
+
+        let taskTxt = [];
+        let taskStatus = [];
+
+        $(function () {
+            console.log("ready!");
+
+            if (window.localStorage.getItem("TASK_TXT") == undefined) { 
+                //undisplay everything bc have no data in storage
+                $("#taskList").html("");
+            } else {
+                //Get the data from storage
+                
+                let text = window.localStorage.getItem("TASK_TXT");
+                let status = window.localStorage.getItem("TASK_STAT");
+
+                let textArr = text.split(":");
+                let statusArr = status.split(":");
+
+                console.log(textArr);
+
+
+
+            }
+
+            $("#addBtn").click(function () {
+                console.log("task added");
+
+                //Add task to taskTxt set
+                taskTxt.unshift($("#taskAdd").val());
+
+                //set complete status to incomplete (represent by 0)
+                taskStatus.unshift(0);
+
+                //Save taskTxt to local storage
+                let text = "";
+                taskTxt.forEach(function(item, index, array){
+                    text = text + ":" + item;
+                })
+                window.localStorage.setItem("TASK_TXT", text);
+
+                //Save taskStatus to local storage
+                text = "";
+                taskStatus.forEach(function(item, index, array){
+                    text = text + ":" + item;
+                })
+                window.localStorage.setItem("TASK_STAT", text);
+                
+                //reload page
+                //location.reload();
+
+                //clear text box
+                //$("#taskAdd").val("");
+
+            });
+
+            $("input[type=checkbox]").click(function () {
+                console.log("checked ", this.checked);
+
+                if (this.checked) {
+                    userPref.add(this.value);
+                    $("label p").css("text-decoration", "line-through");
+                } else {
+                    userPref.delete(this.value);
+                    $("label p").css("text-decoration", "none");
+
+                }
+
+
+            });
+
+
+            
+        });
+
+
+    </script>
 
 
 </body>
