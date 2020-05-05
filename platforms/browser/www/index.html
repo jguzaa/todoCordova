@@ -16,7 +16,7 @@
     <div data-role="page" id="page1">
 
         <div data-role="header">
-            <h1 id="showDate">DD/MM/YYYY</h1>
+            <h1 id="showDate">YYYY/MM/DD</h1>
         </div>
 
         <div data-role="content">
@@ -36,6 +36,7 @@
 
             <input type="text" name="taskAdd" id="taskAdd" value="">
             <button id="addBtn">Add</button>
+            <button id="clrBtn">Clear Done Task</button>
 
         </div><!-- /content -->
 
@@ -58,6 +59,7 @@
         $(function () {
             console.log("ready!");
 
+            //set up ui when app start
             if (window.localStorage.getItem("TASK_TXT") == undefined) {
                 //undisplay everything bc have no data in storage
                 $("#taskList").html("");
@@ -79,11 +81,17 @@
                 $("#taskList").html(htmlEle);
 
                 //check task status then update checkbox and line through
-
-
+                taskStatus.forEach(function (item, index, array) {
+                    if (item == "1") {
+                        //update ui
+                        $("#" + index + "p").css("text-decoration", "line-through");
+                        $("#" + index).prop('checked', true);
+                    }
+                })
 
             }
 
+            //add button event handling
             $("#addBtn").click(function () {
                 console.log("task added");
 
@@ -91,7 +99,7 @@
                 taskTxt.push($("#taskAdd").val());
 
                 //set complete status to incomplete (represent by 0)
-                taskStatus.push(0);
+                taskStatus.push("0");
 
                 //Save taskTxt to local storage
                 window.localStorage.setItem("TASK_TXT", taskTxt.toString());
@@ -107,10 +115,43 @@
 
             });
 
+            //clear button event handling
+            $("#clrBtn").click(function () {
+                console.log("task clear");
+
+                let inprogress = true;
+                let donePos = -1;
+
+                while(inprogress){
+
+                    //finding done task position in array
+                    donePos = taskStatus.indexOf("1");
+
+                    if(donePos >= 0){
+                        taskStatus.splice(donePos, 1);
+                        taskTxt.splice(donePos, 1);
+                    }else{
+                        inprogress = false;
+                    }
+
+                }
+
+
+                //update local storage
+                window.localStorage.setItem("TASK_STAT", taskStatus.toString());
+                window.localStorage.setItem("TASK_TXT", taskTxt.toString());
+
+                //reload page
+                location.reload();
+
+            });
+
+            //check box event handling
             $("input[type=checkbox]").click(function () {
                 console.log("checked ", this.checked);
 
                 if (this.checked) {
+                    //update ui
                     $("#" + this.value + "p").css("text-decoration", "line-through");
 
                     //update done item by change it to 1 in taskStatus
@@ -118,15 +159,24 @@
 
                 } else {
                     $("#" + this.value + "p").css("text-decoration", "none");
-                    
+                    //update undone item by change it to 0 in taskStatus
+                    taskStatus[this.value] = "0";
                 }
 
                 //save task status to local storage
-
+                window.localStorage.setItem("TASK_STAT", taskStatus.toString());
 
             });
 
+            //update date in header
+            var d = new Date();
 
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var output = d.getFullYear() + '/' + (month < 10 ? '0' : '') + month + '/' + (day < 10 ? '0' : '') + day;
+
+            $("#showDate").html(output);
 
         });
 
