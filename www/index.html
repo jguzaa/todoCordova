@@ -70,22 +70,19 @@
                 let text = window.localStorage.getItem("TASK_TXT");
                 let status = window.localStorage.getItem("TASK_STAT");
 
-                let textArr = text.split(":");
-                let statusArr = status.split(":");
-
-                //remove unused first element
-                textArr.shift();
-                statusArr.shift();
+                taskTxt = text.split(",");
+                taskStatus = status.split(",");
 
                 //generate the list from arrays
                 let htmlEle = "";
-                textArr.forEach(function (item, index, array) {
+                taskTxt.forEach(function (item, index, array) {
                     htmlEle += "<input type=\"checkbox\" name=\"" + index + "\" id=\"" + index + "\" value=\"" + index + "\"><label for=\"" + index + "\"><p>" + item + "</p></label>";
                 })
 
                 $("#taskList").html(htmlEle);
 
-                //
+                //check task status then update checkbox and line through
+
 
 
             }
@@ -100,21 +97,13 @@
                 taskStatus.push(0);
 
                 //Save taskTxt to local storage
-                let text = "";
-                taskTxt.forEach(function (item, index, array) {
-                    text = text + ":" + item;
-                })
-                window.localStorage.setItem("TASK_TXT", text);
+                window.localStorage.setItem("TASK_TXT", taskTxt.toString());
 
                 //Save taskStatus to local storage
-                text = "";
-                taskStatus.forEach(function (item, index, array) {
-                    text = text + ":" + item;
-                })
-                window.localStorage.setItem("TASK_STAT", text);
+                window.localStorage.setItem("TASK_STAT", taskStatus.toString());
 
                 //reload page
-                //location.reload();
+                location.reload();
 
                 //clear text box
                 //$("#taskAdd").val("");
